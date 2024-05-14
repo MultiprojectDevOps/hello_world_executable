@@ -1,0 +1,34 @@
+name: "Install Hello World Executable"
+description: "Installs the Hello World Executable"
+inputs:
+  cmake_prefix_path:
+    description: "Where CMake should look for the hello world library?"
+    required: true
+  install_location: 
+    description: "Full path to where the executable should be installed"
+    required: false
+    default: $HOME/install
+runs:
+  using: "composite"
+  steps:
+    #- name: Get Compilers and CMake
+    #  run: |
+    #     sudo apt update
+    #     sudo apt install gcc-11 g++-11 cmake
+    #     gcc --version
+    #  shell: bash
+    - name: Configure Hello World Executable
+      run:  | 
+        cmake -H. \
+              -Bbuild \
+              -DCMAKE_CXX_COMPILER=gcc \
+              -DBUILD_SHARED_LIBS=TRUE \
+              -DCMAKE_PREFIX_PATH=${{inputs.cmake_prefix_path}} \
+              -DCMAKE_INSTALL_PREFIX=${{ inputs.install_location }}
+      shell: bash
+    - name: Build Hello World Executable
+      run: cmake --build build
+      shell: bash
+    - name: Install Hello World Executable
+      run: cmake --build build --target install
+      shell: bash

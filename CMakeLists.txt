@@ -23,7 +23,6 @@ cmaize_find_dependency(
     FIND_TARGET  hello_world::hello_world
 )
 
-set(CMAKE_CXX_STANDARD 17)
 cmaize_add_executable(
     hello_world_exe 
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src"  

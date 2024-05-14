@@ -1,0 +1,42 @@
+# Copyright 2024 Multiproject Devops Team
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  test_build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    - name: Install hello world 
+      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world
+      with:
+        install_location: $HOME/install/hello_world_library
+    - name: Verify
+      run: |
+         ls $HOME/install/hello_world_library/include
+         ls $HOME/install/hello_world_library/lib/hello_world
+    - name: Build Hello world executable
+      uses: .github/actions/install_hello_world
+      with:
+        cmake_prefix_path: $HOME/install/hello_world_library
+    - name: Run Hello World Executable
+      run: $HOME/install/bin/hello_world
+      shell: bash
