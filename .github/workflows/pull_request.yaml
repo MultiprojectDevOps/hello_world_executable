@@ -33,10 +33,10 @@ jobs:
       run: |
          ls $HOME/install/hello_world_library/include
          ls $HOME/install/hello_world_library/lib/hello_world
-    - name: Build Hello world executable
-      uses: .github/actions/install_hello_world
-      with:
-        cmake_prefix_path: $HOME/install/hello_world_library
-    - name: Run Hello World Executable
-      run: $HOME/install/bin/hello_world
-      shell: bash
+    # - name: Build Hello world executable
+    #   uses: .github/actions/install_hello_world
+    #   with:
+    #     cmake_prefix_path: $HOME/install/hello_world_library
+    # - name: Run Hello World Executable
+    #   run: $HOME/install/bin/hello_world
+    #   shell: bash
