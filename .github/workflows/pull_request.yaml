@@ -26,7 +26,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
     - name: Install hello world 
-      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@main
+      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v1.0.0
       with:
         install_location: $HOME/install/hello_world_library
     - name: Verify
