@@ -1,34 +1,47 @@
 name: "Install Hello World Executable"
 description: "Installs the Hello World Executable"
 inputs:
-  cmake_prefix_path:
+  work_dir:
     description: "Where CMake should look for the hello world library?"
-    required: true
+    required: false
+    default: ${GITHUB_WORKSPACE}/hello_world_executable
+  library_install_location:
+    description: "Where should the Hello World Library be installed?"
+    required: false
+    default: ${GITHUB_WORKSPACE}/hello_world_library/install
   install_location: 
     description: "Full path to where the executable should be installed"
     required: false
-    default: $HOME/install
+    default: ${GITHUB_WORKSPACE}/hello_world_executable/install
+  do_checkout:
+    description: "Should we checkout hello world executable?"
+    required: false
+    default: true
 runs:
   using: "composite"
   steps:
-    #- name: Get Compilers and CMake
-    #  run: |
-    #     sudo apt update
-    #     sudo apt install gcc-11 g++-11 cmake
-    #     gcc --version
-    #  shell: bash
+    - name: Checkout Repository
+      if: ${{ inputs.do_checkout }}
+      with:
+        repository: MultiprojectDevOps/hello_world_executable
+        path: ${{ inputs.work_dir }}
+      uses: actions/checkout@v4
+    - name: Install Hello World Library
+      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v2.0.0
+      with:
+        install_location: ${{ inputs.library_install_location }}
     - name: Configure Hello World Executable
       run:  | 
-        cmake -H. \
-              -Bbuild \
+        cmake -H${{ inputs.work_dir }} \
+              -B${{ inputs.work_dir }}/build \
               -DCMAKE_CXX_COMPILER=gcc \
               -DBUILD_SHARED_LIBS=TRUE \
-              -DCMAKE_PREFIX_PATH=${{inputs.cmake_prefix_path}} \
+              -DCMAKE_PREFIX_PATH=${{ inputs.library_install_location }} \
               -DCMAKE_INSTALL_PREFIX=${{ inputs.install_location }}
       shell: bash
     - name: Build Hello World Executable
-      run: cmake --build build
+      run: cmake --build ${{ inputs.work_dir }}/build
       shell: bash
     - name: Install Hello World Executable
-      run: cmake --build build --target install
+      run: cmake --build ${{inputs.work_dir }}/build --target install
       shell: bash

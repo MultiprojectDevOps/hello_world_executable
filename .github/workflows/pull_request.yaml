@@ -25,18 +25,11 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-    - name: Install hello world 
-      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v1.0.0
+    - name: Build Hello world executable
+      uses: ./.github/actions/install_hello_world
       with:
-        install_location: $HOME/install/hello_world_library
-    - name: Verify
-      run: |
-         ls $HOME/install/hello_world_library/include
-         ls $HOME/install/hello_world_library/lib/hello_world
-    # - name: Build Hello world executable
-    #   uses: .github/actions/install_hello_world
-    #   with:
-    #     cmake_prefix_path: $HOME/install/hello_world_library
-    # - name: Run Hello World Executable
-    #   run: $HOME/install/bin/hello_world
-    #   shell: bash
+        do_checkout: false
+        install_location: ${GITHUB_WORKSPACE}/install
+    - name: Run Hello World Executable
+      run: ${GITHUB_WORKSPACE}/install/bin/hello_world
+      shell: bash
