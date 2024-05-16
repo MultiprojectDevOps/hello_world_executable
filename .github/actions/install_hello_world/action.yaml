@@ -23,6 +23,7 @@ runs:
             https://www.github.com/MultiprojectDevOps/hello_world_executable.git \
             ${{ inputs.work_dir }} 
          fi
+      shell: bash
     - name: Install Hello World Library
       uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v2.0.1
       with:
