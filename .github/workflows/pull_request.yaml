@@ -29,6 +29,7 @@ jobs:
       uses: ./.github/actions/install_hello_world
       with:
         do_checkout: false
+        library_install_location: ${GITHUB_WORKSPACE}/hello_world_library/install
         install_location: ${GITHUB_WORKSPACE}/install
     - name: Run Hello World Executable
       run: ${GITHUB_WORKSPACE}/install/bin/hello_world
