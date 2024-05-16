@@ -5,14 +5,10 @@ inputs:
     description: "Where CMake should look for the hello world library?"
     required: false
     default: ${GITHUB_WORKSPACE}/hello_world_executable
-  library_install_location:
-    description: "Where should the Hello World Library be installed?"
-    required: false
-    default: ${GITHUB_WORKSPACE}/hello_world_library/install
   install_location: 
     description: "Full path to where the executable should be installed"
     required: false
-    default: ${GITHUB_WORKSPACE}/hello_world_executable/install
+    default: ${GITHUB_WORKSPACE}/install
   do_checkout:
     description: "Should we checkout hello world executable?"
     required: false
@@ -21,22 +17,23 @@ runs:
   using: "composite"
   steps:
     - name: Checkout Repository
-      if: ${{ inputs.do_checkout }}
-      with:
-        repository: MultiprojectDevOps/hello_world_executable
-        path: ${{ inputs.work_dir }}
-      uses: actions/checkout@v4
+      run: |
+         if ${{ inputs.do_checkout }} ; then 
+            git clone \ 
+            https://www.github.com/MultiprojectDevOps/hello_world_executable.git \
+            ${{ inputs.work_dir }} 
+         fi
     - name: Install Hello World Library
-      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v2.0.0
+      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world@v2.0.1
       with:
-        install_location: ${{ inputs.library_install_location }}
+        install_location: ${{ inputs.install_location }}
     - name: Configure Hello World Executable
       run:  | 
         cmake -H${{ inputs.work_dir }} \
               -B${{ inputs.work_dir }}/build \
               -DCMAKE_CXX_COMPILER=gcc \
               -DBUILD_SHARED_LIBS=TRUE \
-              -DCMAKE_PREFIX_PATH=${{ inputs.library_install_location }} \
+              -DCMAKE_PREFIX_PATH=${{ inputs.install_location }} \
               -DCMAKE_INSTALL_PREFIX=${{ inputs.install_location }}
       shell: bash
     - name: Build Hello World Executable
