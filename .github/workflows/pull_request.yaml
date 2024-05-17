@@ -30,5 +30,5 @@ jobs:
       with:
         do_checkout: false
     - name: Run Hello World Executable
-      run: ${GITHUB_WORKSPACE}/install/bin/hello_world
+      run: ${GITHUB_WORKSPACE}/install/bin/hello_world_executable/hello_world
       shell: bash
