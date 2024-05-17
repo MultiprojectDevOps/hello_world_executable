@@ -4,7 +4,7 @@ inputs:
   work_directory:
     description: "Where CMake should look for the hello world library?"
     required: false
-    default: ${GITHUB_WORKSPACE}/hello_world_executable
+    default: ${GITHUB_WORKSPACE}
   install_location: 
     description: "Full path to where the executable should be installed"
     required: false
