@@ -17,16 +17,18 @@ cmake_minimum_required(VERSION 3.14)
 project(hello_world_exe VERSION "1.0.0" LANGUAGES CXX)
 include(cmake/get_cmaize.cmake)
 
-cmaize_find_dependency(
-    hello_world
+cmaize_find_or_build_dependency(
+    hello_world_library
+    VERSION main
     URL github.com/MultiprojectDevops/hello_world_library
-    FIND_TARGET  hello_world::hello_world
+    BUILD_TARGET hello_world_library
+    FIND_TARGET  hello_world_library::hello_world_library
 )
 
 cmaize_add_executable(
     hello_world_exe 
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/src"  
-    DEPENDS hello_world
+    DEPENDS hello_world_library
 )
 
 cmaize_add_package(hello_world_exe NAMESPACE hello_world_exe::)

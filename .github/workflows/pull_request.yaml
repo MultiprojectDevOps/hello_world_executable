@@ -26,7 +26,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
     - name: Build Hello world executable
-      uses: ./.github/actions/install_hello_world
+      uses: ./.github/actions/install_hello_world_executable
       with:
         do_checkout: false
     - name: Run Hello World Executable
