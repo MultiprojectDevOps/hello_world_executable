@@ -30,5 +30,8 @@ jobs:
       with:
         do_checkout: false
     - name: Run Hello World Executable
-      run: ${GITHUB_WORKSPACE}/install/bin/hello_world_exe/hello_world_exe
+      # I do no know why the RPATH is not working on CI/CD...
+      run: |
+        LD_LIBRARY_PATH=${GITHUB_WORKSPACE}/install/lib/hello_world_library \
+        ${GITHUB_WORKSPACE}/install/bin/hello_world_exe/hello_world_exe
       shell: bash
