@@ -1,0 +1,45 @@
+name: "Install Hello World Executable"
+description: "Installs the Hello World Executable"
+inputs:
+  work_directory:
+    description: "Where CMake should look for the hello world library?"
+    required: false
+    default: ${GITHUB_WORKSPACE}
+  install_location: 
+    description: "Full path to where the executable should be installed"
+    required: false
+    default: ${GITHUB_WORKSPACE}/install
+  do_checkout:
+    description: "Should we checkout hello world executable?"
+    required: false
+    default: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Repository
+      run: |
+         if ${{ inputs.do_checkout }} ; then 
+            git clone \ 
+            https://www.github.com/MultiprojectDevOps/hello_world_executable.git \
+            ${{ inputs.work_directory }}
+         fi
+      shell: bash
+    - name: Install Hello World Library
+      uses: MultiprojectDevOps/hello_world_library/.github/actions/install_hello_world_library@v3.0.0
+      with:
+        work_directory: ${{ inputs.work_directory }}/../hello_world_library
+        install_location: ${{ inputs.install_location }}
+    - name: Configure Hello World Executable
+      run:  | 
+        cmake -H${{ inputs.work_directory }} \
+              -B${{ inputs.work_directory }}/build \
+              -DCMAKE_CXX_COMPILER=g++ \
+              -DCMAKE_PREFIX_PATH=${{ inputs.install_location }} \
+              -DCMAKE_INSTALL_PREFIX=${{ inputs.install_location }}
+      shell: bash
+    - name: Build Hello World Executable
+      run: cmake --build ${{ inputs.work_directory }}/build
+      shell: bash
+    - name: Install Hello World Executable
+      run: cmake --build ${{inputs.work_directory }}/build --target install
+      shell: bash
