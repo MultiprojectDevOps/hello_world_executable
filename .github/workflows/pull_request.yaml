@@ -18,8 +18,13 @@ on:
   pull_request:
     branches:
       - main
-  
+
 jobs:
+  maintenance:
+    uses: MultiprojectDevOps/.github/.github/workflows/pull_request_common.yaml@main
+    with:
+      source_directories: 'src'
+
   test_build:
     runs-on: ubuntu-latest
     steps:
